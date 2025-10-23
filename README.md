@@ -1,0 +1,1 @@
+# Regístro de Vehículos en Estacionamiento Trabajo Práctico Integrador - Octubre 2025 Autor : Alberto Alzu Aplicacion en JavaScript para registrar la entrada y salida de vehiculos en un estacionamiento, calcular tiempo y costo según tipo de vehiculo.
