@@ -1,0 +1,12 @@
+{
+  "name": "registro-estacionamiento",
+  "version": "1.0.0",
+  "description": "Sistema para registrar entrada y salida de vehículos en un estacionamiento.",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "author": "Alberto",
+  "license": "ISC"
+}
