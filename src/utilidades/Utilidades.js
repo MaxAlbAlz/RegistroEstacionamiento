@@ -43,7 +43,7 @@ export function validarTipoVehiculo(tipo) {
   const tiposValidos = ["auto", "moto", "camioneta"];
   return tiposValidos.includes(tipo.toLowerCase());
 }
-
+export const minutosEntre = calcularDiferenciaMinutos;
 // -----------------------------------------
 //  Exportamos todas las funciones para poder usarlas en otros módulos
 // -----------------------------------------
