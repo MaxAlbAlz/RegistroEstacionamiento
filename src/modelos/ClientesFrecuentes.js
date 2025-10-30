@@ -1,59 +1,33 @@
-// =========================================
-// 👤 Módulo: Cliente Frecuente
-// -----------------------------------------
-// Este archivo define la estructura (clase) de un cliente frecuente.
-// Cada cliente tiene:
-//  - nombre
-//  - número de documento
-//  - teléfono
-//  - vehículos asociados (puede tener más de uno)
-//
-// En el futuro se podría ampliar para aplicar descuentos,
-// membresías, etc.
-// =========================================
-
-// Exportamos la clase ClienteFrecuente
+// clienteFrecuente.js
 export class ClienteFrecuente {
-  // -----------------------------------------
-  // Constructor: se ejecuta al crear un nuevo cliente.
-  // -----------------------------------------
   constructor(nombre, documento, telefono) {
-    this.nombre = nombre;         // Ejemplo: "Alberto Alzuga"
-    this.documento = documento;   // Ejemplo: "37766117"
-    this.telefono = telefono;     // Ejemplo: "2494514292"
-    this.vehiculos = [];          // Array para guardar los vehículos del cliente
+    this.nombre = nombre || "Sin nombre";
+    this.documento = documento || "";
+    this.telefono = telefono || "";
+    this.vehiculos = []; // guardamos objetos Vehiculo o patentes
   }
 
-  // -----------------------------------------
-  //  Agrega un vehículo al cliente
-  // Recibe un objeto vehículo (de la clase Vehiculo)
-  // -----------------------------------------
+  // Añadir vehículo (objeto vehiculo o patente)
   agregarVehiculo(vehiculo) {
-    this.vehiculos.push(vehiculo);
+    // guardamos la patente si recibimos objeto o string
+    if (typeof vehiculo === "string") {
+      this.vehiculos.push(vehiculo);
+    } else if (vehiculo && vehiculo.patente) {
+      this.vehiculos.push(vehiculo.patente);
+    }
   }
 
-  // ----------------------------------------
-  //  Muestra los datos del cliente en formato de texto
-  // -----------------------------------------
-  mostrarDatos() {
-    return `
- Cliente: ${this.nombre}
- Documento: ${this.documento}
- Teléfono: ${this.telefono}
- Vehículos: ${this.vehiculos.map(v => v.patente).join(", ") || "Ninguno"}
-`;
-  }
-
-  // -----------------------------------------
-  //  Busca si un vehículo pertenece al cliente
-  // Devuelve true si lo encuentra
-  // -----------------------------------------
   tieneVehiculo(patente) {
-    return this.vehiculos.some(v => v.patente === patente);
+    for (let i = 0; i < this.vehiculos.length; i++) {
+      if (this.vehiculos[i] === patente) return true;
+    }
+    return false;
+  }
+
+  infoTexto() {
+    const veh = this.vehiculos.length ? this.vehiculos.join(", ") : "Ninguno";
+    return `Cliente: ${this.nombre} | Doc: ${this.documento} | Tel: ${this.telefono} | Vehículos: ${veh}`;
   }
 }
 
-// -----------------------------------------
-//  Exportación por defecto
-// -----------------------------------------
 export default ClienteFrecuente;
