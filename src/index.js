@@ -1,7 +1,7 @@
 // index.js
 // Punto de entrada. Usamos import/export y llamamos funciones con if/else
 import Vehiculo from "./modelos/vehiculos.js";
-import ClienteFrecuente from "./modelos/clienteFrecuente.js";
+import ClienteFrecuente from "./modelos/ClientesFrecuentes.js";
 import {
   guardarEntrada,
   guardarSalida,
@@ -14,7 +14,7 @@ import {
   validarTipoVehiculo,
   minutosEntre,
   formatearFecha
-} from "./utilidades/utilidades.js";
+} from "./utilidades/Utilidades.js";
 
 // Simulamos una "base" de clientes frecuentes
 const cliente1 = new ClienteFrecuente("Alberto Alz", "40123456", "11-1234-5678");
