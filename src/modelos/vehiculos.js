@@ -1,72 +1,74 @@
 // =========================================
-//  Módulo: Vehículo
+//  Módulo: Vehículo y subclases
 // -----------------------------------------
-// Este archivo define la estructura (clase) de los vehículos
-// que se registran en el estacionamiento.
-// Cada vehículo tiene:
-//  - patente
-//  - marca
-//  - modelo
-//  - tipo (auto, moto o camioneta)
-//  - hora de entrada
+// Define la clase base Vehiculo y las clases hijas
+// Auto, Moto y Camioneta, que heredan sus propiedades.
 //
-// Además, esta clase tiene métodos para calcular el tiempo
-// y el costo del estacionamiento.
+// Cada clase tiene su propio tipo de vehículo y un método
+// infoTexto() que devuelve información legible.
 // =========================================
 
-// Exportamos la clase para poder usarla en otros archivos
+// -----------------------------------------
+//  Clase base Vehiculo
+// -----------------------------------------
 export class Vehiculo {
-
-  // -----------------------------------------
-  //  Constructor: se ejecuta al crear un nuevo vehículo.
-  // Asigna los valores recibidos a las propiedades del objeto.
-  // -----------------------------------------
-  constructor(patente, marca, modelo, tipo) {
-    this.patente = patente;         // Ejemplo: "ABC123"
-    this.marca = marca;             // Ejemplo: "Ford"
-    this.modelo = modelo;           // Ejemplo: "Fiesta"
-    this.tipo = tipo;               // Ejemplo: "auto"
-    this.horaEntrada = new Date();  // Guarda la fecha y hora actual
+  constructor(patente, tipo, color) {
+    this.patente = patente;
+    this.tipo = tipo;
+    this.color = color;
+    this.horaEntrada = null;
+    this.horaSalida = null;
   }
 
-  // -----------------------------------------
-  //  Calcula el tiempo total que el vehículo estuvo estacionado.
-  // Recibe la hora de salida y devuelve el tiempo en minutos.
-  // -----------------------------------------
-  calcularTiempoEstacionado(horaSalida) {
-    const diferencia = horaSalida - this.horaEntrada; // en milisegundos
-    const minutos = Math.floor(diferencia / 60000);   // convertir a minutos
-    return minutos;
+  // Método para registrar la hora de entrada
+  registrarEntrada() {
+    this.horaEntrada = new Date();
   }
 
-  // -----------------------------------------
-  //  Calcula el costo total según el tipo de vehículo
-  // y el tiempo estacionado.
-  // -----------------------------------------
-  calcularCosto(horaSalida) {
-    const minutos = this.calcularTiempoEstacionado(horaSalida);
-    let tarifaPorMinuto;
-    if (this.tipo.toLowerCase() === "auto") {
-      tarifaPorMinuto = 100; // 100 pesos por minuto
-    } else if (this.tipo.toLowerCase() === "moto") {
-      tarifaPorMinuto = 50; // 50 pesos por minuto
-    } else if (this.tipo.toLowerCase() === "camioneta") {
-      tarifaPorMinuto = 150; // 150 pesos por minuto
-    } else {
-      tarifaPorMinuto = 100; // Valor por defecto
-    }
-
-    const total = minutos * tarifaPorMinuto;
-    return total.toFixed(2); // dos decimales
+  // Método para registrar la hora de salida
+  registrarSalida() {
+    this.horaSalida = new Date();
   }
 
-  // -----------------------------------------
-  //  Devuelve un texto legible con los datos del vehículo.
-  // -----------------------------------------
-  mostrarDatos() {
-    return ` Patente: ${this.patente} | Marca: ${this.marca} | Modelo: ${this.modelo} | Tipo: ${this.tipo} | Ingreso: ${this.horaEntrada.toLocaleString()}`;
+  // Método que devuelve un texto con la info del vehículo
+  infoTexto() {
+    return `Vehículo tipo: ${this.tipo.toUpperCase()} | Patente: ${this.patente} | Color: ${this.color}`;
   }
 }
 
-// Exportamos por defecto también (por si se importa así)
-export default Vehiculo;
+// -----------------------------------------
+//  Clase Auto
+// -----------------------------------------
+export class Auto extends Vehiculo {
+  constructor(patente, color) {
+    super(patente, "auto", color);
+  }
+}
+
+// -----------------------------------------
+//  Clase Moto
+// -----------------------------------------
+export class Moto extends Vehiculo {
+  constructor(patente, color) {
+    super(patente, "moto", color);
+  }
+}
+
+// -----------------------------------------
+//  Clase Camioneta
+// -----------------------------------------
+export class Camioneta extends Vehiculo {
+  constructor(patente, color) {
+    super(patente, "camioneta", color);
+  }
+}
+
+// -----------------------------------------
+//  Exportación agrupada
+// -----------------------------------------
+export default {
+  Vehiculo,
+  Auto,
+  Moto,
+  Camioneta
+};
