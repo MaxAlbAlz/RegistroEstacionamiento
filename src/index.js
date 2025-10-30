@@ -1,6 +1,6 @@
 // index.js
 // Punto de entrada. Usamos import/export y llamamos funciones con if/else
-import Vehiculo from "./modelos/vehiculo.js";
+import Vehiculo from "./modelos/vehiculos.js";
 import ClienteFrecuente from "./modelos/clienteFrecuente.js";
 import {
   guardarEntrada,
