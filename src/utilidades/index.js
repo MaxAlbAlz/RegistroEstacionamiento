@@ -1,104 +1,118 @@
-// =========================================
-// 🏁 Archivo Principal: index.js
-// -----------------------------------------
-// Este es el punto de entrada del programa.
-// Desde acá conectamos todos los módulos:
-//  - modelos (Vehiculo, ClienteFrecuente)
-//  - datos (almacenamiento)
-//  - utilidades (validaciones y cálculos)
-//
-// También simulamos algunas acciones básicas
-// como registrar entrada, salida y ver listados.
-// =========================================
-
-// 📦 Importamos módulos del proyecto
+// index.js
+// Punto de entrada. Usamos import/export y llamamos funciones con if/else
 import Vehiculo from "./modelos/vehiculo.js";
 import ClienteFrecuente from "./modelos/clienteFrecuente.js";
 import {
-  registrarEntrada,
-  registrarSalida,
-  obtenerVehiculosActuales,
+  guardarEntrada,
+  guardarSalida,
+  obtenerActivos,
   obtenerHistorial
 } from "./datos/almacenamiento.js";
 
 import {
   validarPatente,
   validarTipoVehiculo,
+  minutosEntre,
   formatearFecha
 } from "./utilidades/utilidades.js";
 
-// =========================================
-// 🧠 Ejemplo: Crear algunos clientes frecuentes
-// =========================================
-const cliente1 = new ClienteFrecuente("Juan Pérez", "40123456", "1123456789");
-const cliente2 = new ClienteFrecuente("María López", "38566789", "1133344455");
+// Simulamos una "base" de clientes frecuentes
+const cliente1 = new ClienteFrecuente("Alberto Alz", "40123456", "11-1234-5678");
+const cliente2 = new ClienteFrecuente("Lucia Gomez", "40111234", "11-9988-7766");
 
-// =========================================
-// 🚗 Registrar entrada de vehículos
-// -----------------------------------------
-// Primero validamos los datos antes de crear el vehículo
-// =========================================
-function registrarVehiculo(patente, marca, modelo, tipo, cliente = null) {
+// Función para registrar entrada con validaciones simples
+export function entradaVehiculo(patente, marca, modelo, tipo, cliente = null) {
+  // validaciones con if/else (muy explícitas)
   if (!validarPatente(patente)) {
-    console.log("❌ Patente inválida. Debe tener formato ABC123.");
-    return;
+    console.log("Patente inválida. Debe ser 3 letras y 3 números (ej: ABC123).");
+    return false;
   }
-
   if (!validarTipoVehiculo(tipo)) {
-    console.log("❌ Tipo de vehículo no válido. Solo: auto, moto o camioneta.");
-    return;
+    console.log("Tipo inválido. Usar: auto, moto o camioneta.");
+    return false;
   }
 
-  // Creamos el vehículo
-  const nuevoVehiculo = new Vehiculo(patente, marca, modelo, tipo);
-  registrarEntrada(nuevoVehiculo);
+  // creamos objeto Vehiculo
+  const v = new Vehiculo(patente, marca, modelo, tipo);
 
-  // Si pertenece a un cliente frecuente, lo agregamos
-  if (cliente) {
-    cliente.agregarVehiculo(nuevoVehiculo);
+  // si es cliente frecuente (objeto pasado), lo asociamos
+  if (cliente && typeof cliente.agregarVehiculo === "function") {
+    cliente.agregarVehiculo(v);
   }
 
-  console.log("✅ Vehículo registrado correctamente:");
-  console.log(nuevoVehiculo.mostrarDatos());
+  // guardamos la entrada en el "almacenamiento"
+  guardarEntrada(v);
+
+  console.log("Entrada registrada:");
+  console.log(v.infoTexto());
+  return true;
 }
 
-// =========================================
-// 🚪 Registrar salida de vehículo
-// -----------------------------------------
-function salidaVehiculo(patente) {
-  registrarSalida(patente);
-  console.log(`🚪 Vehículo con patente ${patente} ha salido del estacionamiento.`);
+// Función para registrar salida
+export function salidaVehiculo(patente) {
+  // buscamos entre activos
+  const activos = obtenerActivos();
+  let encontrado = null;
+  for (let i = 0; i < activos.length; i++) {
+    if (activos[i].patente === patente) {
+      encontrado = activos[i];
+      break;
+    }
+  }
+  if (!encontrado) {
+    console.log("No se encontró vehículo con esa patente entre los activos.");
+    return false;
+  }
+
+  // registramos salida y calculamos costo
+  encontrado.registrarSalida();
+  const minutos = encontrado.calcularMinutos();
+  const costo = encontrado.calcularCosto();
+
+  // movemos al historial
+  guardarSalida(patente); // devuelve true/false si movedo
+
+  console.log("Salida registrada:");
+  console.log(encontrado.infoTexto());
+  console.log("Minutos estacionado:", minutos);
+  console.log("Costo total: $" + costo);
+  return true;
 }
 
-// =========================================
-// 📋 Mostrar estado actual
-// -----------------------------------------
-function mostrarVehiculosActuales() {
-  console.log("=== Vehículos actualmente en el estacionamiento ===");
-  const vehiculos = obtenerVehiculosActuales();
-  vehiculos.forEach(v => console.log(v.mostrarDatos()));
+// Funciones para mostrar listados
+export function mostrarActivos() {
+  const activos = obtenerActivos();
+  console.log("=== Vehículos activos ===");
+  if (activos.length === 0) {
+    console.log("No hay vehículos en el estacionamiento.");
+  } else {
+    for (let i = 0; i < activos.length; i++) {
+      console.log(activos[i].infoTexto());
+    }
+  }
 }
 
-function mostrarHistorial() {
-  console.log("=== Historial de vehículos ===");
-  console.log(obtenerHistorial());
+export function mostrarHistorial() {
+  const h = obtenerHistorial();
+  console.log("=== Historial ===");
+  if (h.length === 0) {
+    console.log("No hay historial todavía.");
+  } else {
+    for (let i = 0; i < h.length; i++) {
+      console.log(h[i].infoTexto ? h[i].infoTexto() : JSON.stringify(h[i]));
+    }
+  }
 }
 
-// =========================================
-// 💡 Simulación de uso del sistema
-// (Estos ejemplos sirven para probar que funciona)
-// =========================================
+// ----- Simulación de uso (para que al ejecutar node src/index.js se vea algo)
+entradaVehiculo("ABC123", "Ford", "Fiesta", "auto", cliente1);
+entradaVehiculo("DEF456", "Honda", "Wave", "moto", cliente2);
 
-// Registramos algunos vehículos
-registrarVehiculo("ABC123", "Ford", "Fiesta", "auto", cliente1);
-registrarVehiculo("DEF456", "Yamaha", "FZ", "moto", cliente2);
+// mostramos activos
+mostrarActivos();
 
-// Mostramos los vehículos en el estacionamiento
-mostrarVehiculosActuales();
-
-// Simulamos la salida de un vehículo
+// simulamos salida con retardo para que haya diferencia de tiempo
 setTimeout(() => {
   salidaVehiculo("ABC123");
   mostrarHistorial();
-}, 2000); // espera 2 segundos antes de simular salida
-
+}, 1000);
