@@ -50,9 +50,9 @@ export function guardarSalida(patente) {
 
   // Precio por hora según tipo
   let tarifa = 0;
-  if (vehiculo.tipo === "auto") tarifa = 700;
-  else if (vehiculo.tipo === "moto") tarifa = 400;
-  else if (vehiculo.tipo === "camioneta") tarifa = 1000;
+  if (vehiculo.tipo === "auto") tarifa = 2000;
+  else if (vehiculo.tipo === "moto") tarifa = 1000;
+  else if (vehiculo.tipo === "camioneta") tarifa = 3500;
   else tarifa = 500; // tipo desconocido
 
   vehiculo.costo = horas * tarifa;
