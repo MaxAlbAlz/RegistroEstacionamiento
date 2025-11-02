@@ -1,4 +1,4 @@
-// src/modelos/vehiculo.js
+// src/modelos/vehiculos.js
 
 // Clase base Vehiculo
 export class Vehiculo {
@@ -10,6 +10,7 @@ export class Vehiculo {
     this.horaEntrada = new Date(); 
     this.horaSalida = null;
     this.costo = 0;
+    this.cliente = cliente;
   }
 
   registrarSalida() {
@@ -45,9 +46,10 @@ export class Vehiculo {
     return this.costo;
   }
 
-  infoTexto() {
-    return `Patente: ${this.patente} | Marca: ${this.marca} | Modelo: ${this.modelo} | Tipo: ${this.tipo.toLowerCase()} | Ingreso: ${this.horaEntrada.toLocaleString()} | Salida: ${this.horaSalida ? this.horaSalida.toLocaleString() : "En curso"} | Minutos: ${this.calcularMinutos()} | Costo: $${this.costo}`;
-  }
+infoTexto() {
+    return `Tipo: ${this.tipo} | Marca: ${this.marca} | Modelo: ${this.modelo} | Patente: ${this.patente}` +
+      (this.cliente ? ` | Cliente: ${this.cliente.nombre}` : "");
+}
 }
 
 // Clases hijas (opcional)
