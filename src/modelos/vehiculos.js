@@ -2,7 +2,7 @@
 
 // Clase base Vehiculo
 export class Vehiculo {
-  constructor(patente, marca, modelo, tipo) {
+  constructor(patente, marca, modelo, tipo, cliente) {
     this.patente = patente;
     this.marca = marca;
     this.modelo = modelo;

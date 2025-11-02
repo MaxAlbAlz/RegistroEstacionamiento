@@ -7,7 +7,7 @@
 //
 //  NO ejecuta nada automáticamente — eso se hace desde app.js
 // =========================================
-
+import readline from "readline";
 import { Vehiculo, Auto, Moto, Camioneta } from "./modelos/vehiculos.js";
 import ClienteFrecuente from "./modelos/ClientesFrecuentes.js";
 
@@ -42,13 +42,13 @@ export function entradaVehiculo(patente, marca, modelo, tipo, cliente = null) {
 
   // Creamos el vehículo según el tipo
   if (tipo.toLowerCase() === "auto") {
-    v = new Auto(patente, marca, modelo);
+    v = new Auto(patente, marca, modelo, cliente);
   } else if (tipo.toLowerCase() === "moto") {
-    v = new Moto(patente, marca, modelo);
+    v = new Moto(patente, marca, modelo, cliente);
   } else if (tipo.toLowerCase() === "camioneta") {
-    v = new Camioneta(patente, marca, modelo);
+    v = new Camioneta(patente, marca, modelo, cliente);
   } else {
-    v = new Vehiculo(patente, marca, modelo, tipo);
+    v = new Vehiculo(patente, marca, modelo, tipo,cliente);
   }
 
   // Asociamos el cliente si fue pasado
