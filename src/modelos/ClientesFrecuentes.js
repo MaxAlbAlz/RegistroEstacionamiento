@@ -1,33 +1,26 @@
-// clienteFrecuente.js
-export class ClienteFrecuente {
-  constructor(nombre, documento, telefono) {
-    this.nombre = nombre || "Sin nombre";
-    this.documento = documento || "";
-    this.telefono = telefono || "";
-    this.vehiculos = []; // guardamos objetos Vehiculo o patentes
+export default class ClienteFrecuente {
+  constructor(nombre, dni, telefono) {
+    this.nombre = nombre;
+    this.dni = dni;
+    this.telefono = telefono;
+    this.vehiculos = [];
   }
 
-  // Añadir vehículo (objeto vehiculo o patente)
   agregarVehiculo(vehiculo) {
-    // guardamos la patente si recibimos objeto o string
-    if (typeof vehiculo === "string") {
+    if (vehiculo) {
       this.vehiculos.push(vehiculo);
-    } else if (vehiculo && vehiculo.patente) {
-      this.vehiculos.push(vehiculo.patente);
     }
   }
 
-  tieneVehiculo(patente) {
-    for (let i = 0; i < this.vehiculos.length; i++) {
-      if (this.vehiculos[i] === patente) return true;
-    }
-    return false;
+  cantidadIngresos() {
+    return this.vehiculos.length;
+  }
+
+  esFrecuente() {
+    return this.cantidadIngresos() >= 3;
   }
 
   infoTexto() {
-    const veh = this.vehiculos.length ? this.vehiculos.join(", ") : "Ninguno";
-    return `Cliente: ${this.nombre} | Doc: ${this.documento} | Tel: ${this.telefono} | Vehículos: ${veh}`;
+    return `Cliente: ${this.nombre} | DNI: ${this.dni} | Tel: ${this.telefono} | Vehículos registrados: ${this.vehiculos.length} | ${this.esFrecuente() ? 'Cliente Frecuente' : 'Cliente Nuevo'}`;
   }
 }
-
-export default ClienteFrecuente;

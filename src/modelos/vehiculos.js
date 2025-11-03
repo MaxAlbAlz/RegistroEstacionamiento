@@ -1,8 +1,6 @@
-// src/modelos/vehiculos.js
-
 // Clase base Vehiculo
 export class Vehiculo {
-  constructor(patente, marca, modelo, tipo, cliente) {
+  constructor(patente, marca, modelo, tipo, cliente = null) {
     this.patente = patente;
     this.marca = marca;
     this.modelo = modelo;
@@ -10,7 +8,7 @@ export class Vehiculo {
     this.horaEntrada = new Date(); 
     this.horaSalida = null;
     this.costo = 0;
-    this.cliente = cliente;
+    this.cliente = cliente;       // cliente ahora se guarda correctamente
   }
 
   registrarSalida() {
@@ -18,25 +16,17 @@ export class Vehiculo {
   }
 
   calcularMinutos() {
-    if (!this.horaSalida) {
-      return 0;
-    }
+    if (!this.horaSalida) return 0;
     const diferenciaMs = this.horaSalida - this.horaEntrada;
-    const minutos = Math.floor(diferenciaMs / 60000);
-    return minutos;
+    return Math.floor(diferenciaMs / 60000);
   }
 
   tarifaPorMinuto() {
     const tipo = this.tipo.toLowerCase();
-    if (tipo === "auto") {
-      return 10;
-    } else if (tipo === "moto") {
-      return 5;
-    } else if (tipo === "camioneta") {
-      return 15;
-    } else {
-      return 10;
-    }
+    if (tipo === "auto") return 10;
+    if (tipo === "moto") return 5;
+    if (tipo === "camioneta") return 15;
+    return 10;
   }
 
   calcularCosto() {
@@ -46,27 +36,33 @@ export class Vehiculo {
     return this.costo;
   }
 
-infoTexto() {
-    return `Tipo: ${this.tipo} | Marca: ${this.marca} | Modelo: ${this.modelo} | Patente: ${this.patente}` +
-      (this.cliente ? ` | Cliente: ${this.cliente.nombre}` : "");
-}
+  // --------------------------------------------
+  // infoTexto ahora muestra nombre, DNI y teléfono
+  // --------------------------------------------
+  infoTexto() {
+    let texto = `Tipo: ${this.tipo} | Marca: ${this.marca} | Modelo: ${this.modelo} | Patente: ${this.patente}`;
+    if (this.cliente) {
+      texto += ` | Cliente: ${this.cliente.nombre} | DNI: ${this.cliente.dni} | Tel: ${this.cliente.telefono}`;
+    }
+    return texto;
+  }
 }
 
-// Clases hijas (opcional)
+// Clases hijas
 export class Auto extends Vehiculo {
-  constructor(patente, marca, modelo) {
-    super(patente, marca, modelo, "auto");
+  constructor(patente, marca, modelo, cliente = null) {
+    super(patente, marca, modelo, "auto", cliente);
   }
 }
 
 export class Moto extends Vehiculo {
-  constructor(patente, marca, modelo) {
-    super(patente, marca, modelo, "moto");
+  constructor(patente, marca, modelo, cliente = null) {
+    super(patente, marca, modelo, "moto", cliente);
   }
 }
 
 export class Camioneta extends Vehiculo {
-  constructor(patente, marca, modelo) {
-    super(patente, marca, modelo, "camioneta");
+  constructor(patente, marca, modelo, cliente = null) {
+    super(patente, marca, modelo, "camioneta", cliente);
   }
 }

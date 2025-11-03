@@ -16,6 +16,10 @@
 // -----------------------------------------
 export function validarPatente(patente) {
   const patron = /^[A-Z]{3}\d{3}$/i; // patrón de 3 letras + 3 números
+  const patron2 = /^[A-Z]{2}\d{3}[A-Z]{2}$/i; // patrón de 2 letras + 3 números + 2 letras (formato nuevo)
+  if (patron2.test(patente)) {
+    return true;
+  }
   return patron.test(patente);
 }
 

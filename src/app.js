@@ -1,3 +1,4 @@
+// src/app.js
 import readline from "readline";
 import {
   entradaVehiculo,
@@ -8,7 +9,7 @@ import {
 
 import ClienteFrecuente from "./modelos/ClientesFrecuentes.js";
 
-// Base de clientes frecuentes (podés ampliarla)
+// Base de clientes frecuentes
 const clientes = [
   new ClienteFrecuente("Alberto Alz", "40123456", "11-1234-5678"),
   new ClienteFrecuente("Lucia Gomez", "40111234", "11-9988-7766"),
@@ -16,13 +17,49 @@ const clientes = [
   new ClienteFrecuente("Marta Diaz", "40333444", "11-3344-5566")
 ];
 
-// Configuración para entrada por consola
+// Configuración readline
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout
 });
 
+// ---------------------------
+// Función registrar ingreso
+// ---------------------------
+function registrarIngreso() {
+  rl.question("Ingrese nombre del cliente: ", (nom) => {
+    rl.question("Ingrese DNI del cliente: ", (dni) => {
+      rl.question("Ingrese teléfono del cliente: ", (telefono) => {
+        rl.question("Ingrese la patente del vehículo (ej: ABC123): ", (patente) => {
+          rl.question("Ingrese la marca: ", (marca) => {
+            rl.question("Ingrese el modelo: ", (modelo) => {
+              rl.question("Ingrese el tipo (auto/moto/camioneta): ", (tipo) => {
+                // Creamos cliente
+                const cliente = new ClienteFrecuente(nom, dni, telefono);
+                entradaVehiculo(patente, marca, modelo, tipo, cliente);
+                mostrarMenu();
+              });
+            });
+          });
+        });
+      });
+    });
+  });
+}
+
+// ---------------------------
+// Función registrar salida
+// ---------------------------
+function registrarSalida() {
+  rl.question("Ingrese la patente del vehículo que sale: ", (patente) => {
+    salidaVehiculo(patente);
+    mostrarMenu();
+  });
+}
+
+// ---------------------------
 // Menú principal
+// ---------------------------
 function mostrarMenu() {
   console.log("\n=== SISTEMA DE ESTACIONAMIENTO ===");
   console.log("1. Registrar ingreso de vehículo");
@@ -57,45 +94,6 @@ function mostrarMenu() {
     }
   });
 }
-
-// Registrar ingreso
-function registrarIngreso() {
-rl.question("ingrese nombre del cliente: ", (nombreCliente) => {
-  rl.question("Ingrese la patente del vehículo: ", (patente) => {
-    rl.question("Ingrese la marca: ", (marca) => {
-      rl.question("Ingrese el modelo: ", (modelo) => {
-        rl.question("Ingrese el tipo (auto/moto/camioneta): ", (tipo) => {
-          rl.question("¿Es cliente frecuente? (s/n): ", (resp) => {
-            let cliente = null;
-
-            if (resp.toLowerCase() === "s") {
-              rl.question("Ingrese nombre del cliente: ", (nombre) => {
-                cliente = clientes.find(c => c.nombre.toLowerCase() === nombre.toLowerCase());
-                if (!cliente) {
-                  console.log("Cliente no encontrado. Se registrará como visitante.");
-                }
-                entradaVehiculo(patente, marca, modelo, tipo, cliente);
-                mostrarMenu();
-              });
-            } else {
-              entradaVehiculo(patente, marca, modelo, tipo);
-              mostrarMenu();
-            }
-          });
-        });
-      });
-    });
-  });
-});
-}
-
-// Registrar salida
-  () => {
-    rl.question("Ingrese la patente del vehículo que sale: ", (patente) => {
-      salidaVehiculo(patente);
-      mostrarMenu();
-    });
-  }
 
 // Inicia el menú
 mostrarMenu();

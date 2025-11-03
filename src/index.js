@@ -48,7 +48,7 @@ export function entradaVehiculo(patente, marca, modelo, tipo, cliente = null) {
   } else if (tipo.toLowerCase() === "camioneta") {
     v = new Camioneta(patente, marca, modelo, cliente);
   } else {
-    v = new Vehiculo(patente, marca, modelo, tipo,cliente);
+    v = new Vehiculo(patente, marca, modelo, tipo, cliente);
   }
 
   // Asociamos el cliente si fue pasado
@@ -116,7 +116,7 @@ export function mostrarActivos() {
 // -------------------------------------------------
 export function mostrarHistorial() {
   const historial = obtenerHistorial();
-  console.log("\n=== 📜 Historial de vehículos ===");
+  console.log("\n===  Historial de vehículos ===");
   if (historial.length === 0) {
     console.log("No hay historial todavía.");
   } else {
